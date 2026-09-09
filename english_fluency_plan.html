@@ -416,6 +416,21 @@
     align-items:center;
     justify-content:center;
   }
+  .back-to-hub{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--muted);
+    text-decoration:none;
+    padding:8px 14px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:var(--paper-dim);
+    margin-bottom:16px;
+  }
+  .back-to-hub:hover{color:var(--seal);border-color:var(--seal);}
   .streak-row{
     margin-top:16px;
     display:flex;
@@ -565,6 +580,7 @@
     .hanzi-hero{font-size:38px;}
     .seal{width:44px;height:44px;font-size:10px;top:20px;right:20px;}
     .theme-toggle{top:20px;right:70px;width:30px;height:30px;font-size:13px;}
+    .back-to-hub{font-size:12px;padding:6px 10px;margin-bottom:12px;}
     .toolbar-row{flex-direction:column;align-items:stretch;}
     .quiz-btn{width:100%;padding:11px 16px;}
     .audio-grid{grid-template-columns:1fr;}
@@ -584,6 +600,7 @@
 <body>
 <div class="wrap">
 
+  <a class="back-to-hub" href="index.html">← Idiomas</a>
   <header>
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Modo oscuro">🌙</button>
     <div class="hanzi-hero cjk">Learn English</div>
