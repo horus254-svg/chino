@@ -152,51 +152,73 @@
     font-family:"Helvetica Neue",Arial,sans-serif;
     color:#5a5347;
     font-size:14px;
-    margin-bottom:20px;
+    margin-bottom:22px;
     max-width:560px;
+    line-height:1.5;
   }
 
-  table.tasks{
-    width:100%;
-    border-collapse:collapse;
-    margin-bottom:26px;
+  .habits{
+    margin-bottom:32px;
+    border:1px solid var(--line);
+    background:var(--paper-dim);
+  }
+  .habits summary{
+    list-style:none;
+    cursor:pointer;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.03em;
+    color:#5a5347;
+  }
+  .habits summary::-webkit-details-marker{display:none;}
+  .habits summary .chevron{transition:transform .2s;color:var(--seal);font-size:12px;}
+  .habits[open] summary .chevron{transform:rotate(90deg);}
+  .task-list{padding:4px 16px 16px;}
+  .task-row{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:14px 0;
+    border-top:1px solid var(--line);
     font-family:"Helvetica Neue",Arial,sans-serif;
   }
-  table.tasks th{
-    text-align:left;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.06em;
-    color:#8a8071;
-    font-weight:500;
-    border-bottom:1px solid var(--line);
-    padding:0 8px 8px 0;
+  .task-row:first-child{border-top:none;}
+  .task-row input{
+    width:20px;height:20px;
+    margin-top:2px;
+    accent-color:var(--seal);
+    cursor:pointer;
+    flex:0 0 auto;
   }
-  table.tasks td{
-    padding:12px 8px 12px 0;
-    border-bottom:1px solid var(--line);
-    font-size:14.5px;
-    vertical-align:top;
-  }
-  table.tasks tr:last-child td{border-bottom:none;}
-  .check{width:36px;}
-  .check input{width:18px;height:18px;accent-color:var(--seal);cursor:pointer;}
+  .task-info{flex:1;min-width:0;}
+  .task-name{font-size:15px;color:var(--ink);}
   .task-name.done{
     color:var(--done);
     text-decoration:line-through;
     text-decoration-color:var(--done);
   }
-  .time-tag{color:var(--gold);font-size:12.5px;}
-  .tool-tag{color:#5a5347;font-size:13px;}
+  .task-meta{
+    margin-top:3px;
+    font-size:12.5px;
+    color:var(--gold);
+  }
+  .task-meta .tool-tag{color:#8a8071;}
+  .task-meta .sep{color:var(--line);margin:0 5px;}
 
   .milestone{
     background:var(--paper-dim);
     border-left:3px solid var(--seal);
-    padding:14px 16px;
-    font-size:14px;
+    padding:16px 18px;
+    font-size:14.5px;
+    line-height:1.5;
     font-family:"Helvetica Neue",Arial,sans-serif;
     color:#3a352c;
-    margin-bottom:30px;
+    margin-bottom:32px;
   }
   .milestone b{color:var(--seal-dark);}
 
@@ -336,10 +358,20 @@
   }
 
   @media (max-width:600px){
+    .wrap{padding:24px 16px 70px;}
     .hanzi-hero{font-size:44px;}
     .seal{width:56px;height:56px;font-size:19px;top:24px;}
-    table.tasks .tool-tag{display:none;}
     .audio-grid{grid-template-columns:1fr;}
+    .phase-head h2{font-size:23px;}
+    .phase-focus{font-size:13.5px;margin-bottom:16px;}
+    .habits summary{font-size:12.5px;padding:13px 14px;}
+    .task-list{padding:2px 14px 14px;}
+    .task-row{gap:12px;padding:12px 0;}
+    .task-name{font-size:14px;}
+    .milestone{font-size:13.5px;padding:14px 16px;}
+    .audio-card{padding:14px;gap:10px;}
+    .audio-grid{gap:12px;}
+    .audio-group-label{margin:20px 0 10px;font-size:11.5px;}
   }
 </style>
 </head>
@@ -604,6 +636,58 @@ const data = [
         ]
       }
     ]
+  },
+  {
+    title: "Vida diaria",
+    months: "Uso diario",
+    focus: "Emociones, clima, transporte y celular — lo que sale sin buscarlo en cualquier conversación real",
+    tasks: [
+      {name:"Repasa una categoría cada día", time:"5 min/día", tool:"Esta página"},
+      {name:"Úsalas cuando surja la situación real", time:"Meta", tool:"Auto-evaluación"},
+    ],
+    milestone: "Puedes describir cómo te sientes, hablar del clima, moverte por la ciudad y resolver problemas con tu celular.",
+    audioGroups: [
+      {
+        label: "Emociones",
+        items: [
+          {hanzi:"我很累", pinyin:"wǒ hěn lèi", es:"estoy muy cansado"},
+          {hanzi:"我有点儿紧张", pinyin:"wǒ yǒudiǎnr jǐnzhāng", es:"estoy un poco nervioso"},
+          {hanzi:"我很兴奋", pinyin:"wǒ hěn xīngfèn", es:"estoy muy emocionado"},
+          {hanzi:"别担心", pinyin:"bié dānxīn", es:"no te preocupes"},
+          {hanzi:"我有点儿难过", pinyin:"wǒ yǒudiǎnr nánguò", es:"estoy un poco triste"},
+        ]
+      },
+      {
+        label: "Clima y tiempo",
+        items: [
+          {hanzi:"今天天气怎么样?", pinyin:"jīntiān tiānqì zěnmeyàng?", es:"¿cómo está el clima hoy?"},
+          {hanzi:"外面在下雨", pinyin:"wàimiàn zài xiàyǔ", es:"está lloviendo afuera"},
+          {hanzi:"今天很热", pinyin:"jīntiān hěn rè", es:"hoy hace mucho calor"},
+          {hanzi:"明天见", pinyin:"míngtiān jiàn", es:"nos vemos mañana"},
+          {hanzi:"我快到了", pinyin:"wǒ kuài dào le", es:"ya casi llego"},
+        ]
+      },
+      {
+        label: "Transporte y direcciones",
+        items: [
+          {hanzi:"怎么去地铁站?", pinyin:"zěnme qù dìtiězhàn?", es:"¿cómo llego al metro?"},
+          {hanzi:"一直走", pinyin:"yìzhí zǒu", es:"sigue derecho"},
+          {hanzi:"往左拐", pinyin:"wǎng zuǒ guǎi", es:"da vuelta a la izquierda"},
+          {hanzi:"打车多少钱?", pinyin:"dǎchē duōshao qián?", es:"¿cuánto cuesta un taxi?"},
+          {hanzi:"堵车了", pinyin:"dǔchē le", es:"hay tráfico"},
+        ]
+      },
+      {
+        label: "Celular y tecnología",
+        items: [
+          {hanzi:"我的手机没电了", pinyin:"wǒ de shǒujī méi diàn le", es:"se me quedó sin batería el celular"},
+          {hanzi:"这里有WiFi吗?", pinyin:"zhèlǐ yǒu WiFi ma?", es:"¿hay WiFi aquí?"},
+          {hanzi:"给我发一下位置", pinyin:"gěi wǒ fā yíxià wèizhì", es:"mándame la ubicación"},
+          {hanzi:"我信号不好", pinyin:"wǒ xìnhào bù hǎo", es:"tengo mala señal"},
+          {hanzi:"你可以给我打电话吗?", pinyin:"nǐ kěyǐ gěi wǒ dǎ diànhuà ma?", es:"¿me puedes llamar?"},
+        ]
+      }
+    ]
   }
 ];
 
@@ -643,12 +727,13 @@ data.forEach((phase, pi) => {
     const checkedAttr = state[id] ? 'checked' : '';
     const doneClass = state[id] ? 'done' : '';
     rows += `
-      <tr>
-        <td class="check"><input type="checkbox" id="${id}" ${checkedAttr} onchange="toggle('${id}', this.checked)"></td>
-        <td><span class="task-name ${doneClass}" id="label-${id}">${t.name}</span></td>
-        <td class="time-tag">${t.time}</td>
-        <td class="tool-tag">${t.tool}</td>
-      </tr>`;
+      <div class="task-row">
+        <input type="checkbox" id="${id}" ${checkedAttr} onchange="toggle('${id}', this.checked)">
+        <div class="task-info">
+          <div class="task-name ${doneClass}" id="label-${id}">${t.name}</div>
+          <div class="task-meta">${t.time}<span class="sep">·</span><span class="tool-tag">${t.tool}</span></div>
+        </div>
+      </div>`;
   });
 
   function buildCard(a, aid){
@@ -699,11 +784,11 @@ data.forEach((phase, pi) => {
       <span class="months">${phase.months}</span>
     </div>
     <div class="phase-focus">${phase.focus}</div>
-    <table class="tasks">
-      <tr><th></th><th>Tarea</th><th>Tiempo</th><th>Herramienta</th></tr>
-      ${rows}
-    </table>
-    <div class="milestone"><b>Meta de fase —</b> ${phase.milestone}</div>
+    <details class="habits">
+      <summary>Hábitos diarios y meta de fase <span class="chevron">▸</span></summary>
+      <div class="task-list">${rows}</div>
+      <div class="milestone" style="margin:0 16px 16px;"><b>Meta —</b> ${phase.milestone}</div>
+    </details>
     <div class="audio-section">
       <h3>${phase.audioGroups ? 'Vocabulario y frases' : 'Frases de esta fase'}</h3>
       <div class="audio-hint">Toca ▶ para oír el ejemplo, luego 🎤 y repite la frase en voz alta. Necesitas pronunciarla correctamente ${MASTERY_PLAYS} veces para quedar "dominada".</div>
@@ -749,7 +834,7 @@ function resetProgress(){
   if(!confirm('¿Reiniciar todo el progreso?')) return;
   Object.keys(state).forEach(k => state[k] = k.startsWith('a-') ? 0 : false);
   saveState();
-  document.querySelectorAll('table.tasks input[type=checkbox]').forEach(cb => cb.checked = false);
+  document.querySelectorAll('.task-list input[type=checkbox]').forEach(cb => cb.checked = false);
   document.querySelectorAll('.task-name').forEach(el => el.classList.remove('done'));
   Object.keys(state).forEach(k => { if(k.startsWith('a-')) renderDots(k); });
   updateProgress();
