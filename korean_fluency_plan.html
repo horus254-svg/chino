@@ -1805,13 +1805,33 @@ function getPickedVoice(){
   return voiceList[idx] || null;
 }
 
+const speakDebounce = {};
+
 async function speak(id, text){
+  // Guard against double-fire on some mobile browsers (touch + synthetic click),
+  // which was causing the phrase to play twice back-to-back.
+  const now = Date.now();
+  if(speakDebounce[id] && now - speakDebounce[id] < 700) return;
+  speakDebounce[id] = now;
+
   const btn = document.getElementById('btn-'+id);
   document.querySelectorAll('.play-btn').forEach(b => b.classList.remove('playing'));
   btn.classList.add('playing');
 
-  // Primary: real Chinese audio via Google's TTS endpoint (works regardless
-  // of which voices are installed on the device).
+  // Primary: the device's own voice, when available — reliable and instant,
+  // no risk of the online service's audio glitching or repeating.
+  const voices = await ensureVoices();
+  const pickedVoice = getPickedVoice();
+  const autoVoice = voices.find(v => v.lang === 'ko-KR')
+                || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('ko'));
+  const chosenVoice = pickedVoice || autoVoice;
+
+  if(chosenVoice){
+    speakWithVoice(id, text, chosenVoice);
+    return;
+  }
+
+  // Fallback: no local voice installed — use the online audio service.
   const url = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&q=' +
               encodeURIComponent(text) + '&tl=ko-KR&client=gtx';
   const audio = new Audio(url);
@@ -1824,6 +1844,23 @@ async function speak(id, text){
     btn.classList.remove('playing');
     speakFallback(id, text);
   }
+}
+
+function speakWithVoice(id, text, voice){
+  const btn = document.getElementById('btn-'+id);
+  window.speechSynthesis.cancel();
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = voice.lang || 'ko-KR';
+  utter.rate = 0.85;
+  utter.volume = 1;
+  utter.voice = voice;
+
+  utter.onend = () => { btn.classList.remove('playing'); registerPlay(id); };
+  utter.onerror = () => btn.classList.remove('playing');
+
+  window.speechSynthesis.resume();
+  setTimeout(() => window.speechSynthesis.speak(utter), 50);
 }
 
 async function speakFallback(id, text){
