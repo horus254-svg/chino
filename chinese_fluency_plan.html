@@ -618,6 +618,15 @@
 <div class="quiz-overlay" id="quizOverlay"></div>
 
 <script>
+function escapeHtml(s){
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 const data = [
   {
     title: "Cimientos",
@@ -1387,16 +1396,17 @@ data.forEach((phase, pi) => {
   function buildCard(a, aid){
     if(!(aid in state)) state[aid] = 0; // correct pronunciations toward mastery
     audioTasks++;
+    const safeText = escapeHtml(a.hanzi);
     return `
       <div class="audio-card" id="card-${aid}">
         <div class="audio-row">
           <div class="btn-group">
             <div class="btn-stack">
-              <button class="play-btn" id="btn-${aid}" onclick='speak("${aid}", ${JSON.stringify(a.hanzi)})' title="Escuchar ejemplo">▶</button>
+              <button class="play-btn" id="btn-${aid}" data-text="${safeText}" onclick="speak('${aid}', this.dataset.text)" title="Escuchar ejemplo">▶</button>
               <span class="btn-label">Oír</span>
             </div>
             <div class="btn-stack">
-              <button class="mic-btn" id="mic-${aid}" onclick='startRecognition("${aid}", ${JSON.stringify(a.hanzi)})' title="Grabar mi pronunciación">🎤</button>
+              <button class="mic-btn" id="mic-${aid}" data-text="${safeText}" onclick="startRecognition('${aid}', this.dataset.text)" title="Grabar mi pronunciación">🎤</button>
               <span class="btn-label">Hablar</span>
             </div>
           </div>
@@ -1660,8 +1670,8 @@ function renderQuizQuestion(){
       <h3>🎲 Examen sorpresa</h3>
       <div class="quiz-progress">Pregunta ${quizState.index+1} de ${quizState.items.length} · Puntos: ${quizState.score}</div>
       <div class="quiz-hanzi">${q.hanzi}</div>
-      <div class="quiz-pinyin">${q.pinyin} · <a href="#" onclick="event.preventDefault(); speakQuiz('${q.id}', ${JSON.stringify(q.hanzi)})">▶ oír</a></div>
-      ${options.map(opt => `<button class="quiz-option" onclick='answerQuiz(this, ${JSON.stringify(opt)}, ${JSON.stringify(q.es)})'>${opt}</button>`).join('')}
+      <div class="quiz-pinyin">${q.pinyin} · <a href="#" data-text="${escapeHtml(q.hanzi)}" onclick="event.preventDefault(); speakQuiz('${q.id}', this.dataset.text)">▶ oír</a></div>
+      ${options.map(opt => `<button class="quiz-option" data-opt="${escapeHtml(opt)}" onclick="answerQuiz(this)">${opt}</button>`).join('')}
     </div>
   `;
 }
@@ -1670,11 +1680,13 @@ function speakQuiz(id, text){
   speak(id, text);
 }
 
-function answerQuiz(btn, chosen, correct){
+function answerQuiz(btn){
+  const chosen = btn.dataset.opt;
+  const correct = quizState.items[quizState.index].es;
   const allOptions = btn.parentElement.querySelectorAll('.quiz-option');
   allOptions.forEach(o => o.onclick = null);
   allOptions.forEach(o => {
-    if(o.textContent === correct) o.classList.add('correct');
+    if(o.dataset.opt === correct) o.classList.add('correct');
   });
   if(chosen === correct){
     quizState.score += 1;
