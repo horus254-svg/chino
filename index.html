@@ -252,32 +252,63 @@
     margin:18px 0 8px;
   }
   .audio-group-label:first-of-type{margin-top:4px;}
+  .audio-card{
     display:flex;
     flex-direction:column;
-    gap:8px;
-    background:#fff8ec;
+    gap:12px;
+    background:#fffaf0;
     border:1px solid var(--line);
-    padding:12px 14px;
+    border-radius:16px;
+    padding:18px;
+    box-shadow:0 2px 8px rgba(28,26,23,.06);
   }
   .audio-row{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:16px;
   }
-  .mic-btn{
+  .btn-group{
+    display:flex;
+    gap:14px;
     flex:0 0 auto;
-    width:34px;
-    height:34px;
+  }
+  .btn-stack{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+  }
+  .btn-stack .btn-label{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:10px;
+    color:#8a8071;
+    letter-spacing:.03em;
+  }
+  .play-btn, .mic-btn{
+    flex:0 0 auto;
+    width:52px;
+    height:52px;
     border-radius:50%;
-    border:1px solid var(--gold);
-    background:var(--paper);
-    color:var(--gold);
-    font-size:14px;
+    font-size:20px;
     cursor:pointer;
     display:flex;
     align-items:center;
     justify-content:center;
-    transition:background .15s, color .15s;
+    transition:background .15s, color .15s, transform .1s;
+    box-shadow:0 2px 4px rgba(28,26,23,.08);
+  }
+  .play-btn{
+    border:2px solid var(--seal);
+    background:#fff;
+    color:var(--seal);
+  }
+  .play-btn:active, .mic-btn:active{transform:scale(.94);}
+  .play-btn:hover{background:var(--seal);color:#fff;}
+  .play-btn.playing{background:var(--seal);color:#fff;}
+  .mic-btn{
+    border:2px solid var(--gold);
+    background:#fff;
+    color:var(--gold);
   }
   .mic-btn:hover{background:var(--gold);color:#fff;}
   .mic-btn.listening{
@@ -287,57 +318,41 @@
   }
   @keyframes pulse{
     0%,100%{box-shadow:0 0 0 0 rgba(184,137,43,.4);}
-    50%{box-shadow:0 0 0 6px rgba(184,137,43,0);}
+    50%{box-shadow:0 0 0 8px rgba(184,137,43,0);}
   }
-  .feedback{
-    font-family:"Helvetica Neue",Arial,sans-serif;
-    font-size:12.5px;
-    min-height:16px;
-    padding-left:44px;
-  }
-  .feedback.correct{color:var(--done);}
-  .feedback.incorrect{color:var(--seal);}
-  .play-btn{
-    flex:0 0 auto;
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    border:1px solid var(--seal);
-    background:var(--paper);
-    color:var(--seal);
-    font-size:14px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:background .15s, color .15s;
-  }
-  .play-btn:hover{background:var(--seal);color:var(--paper);}
-  .play-btn.playing{background:var(--seal);color:var(--paper);}
-  .audio-text .hanzi{font-size:19px;}
+  .audio-text{flex:1;min-width:0;}
+  .audio-text .hanzi{font-size:26px;font-weight:600;line-height:1.2;}
   .audio-text .pinyin{
     font-family:"Helvetica Neue",Arial,sans-serif;
-    font-size:12.5px;
+    font-size:13.5px;
     color:var(--gold);
-    margin:2px 0;
+    margin:4px 0 2px;
   }
   .audio-text .es{
     font-family:"Helvetica Neue",Arial,sans-serif;
-    font-size:12.5px;
+    font-size:13.5px;
     color:#5a5347;
   }
   .mastery-dots{
-    margin-left:auto;
     display:flex;
-    gap:4px;
-    flex:0 0 auto;
+    gap:6px;
+    align-items:center;
+    padding-top:2px;
+    border-top:1px dashed var(--line);
+    padding-top:10px;
+  }
+  .mastery-dots .dots-label{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:11px;
+    color:#8a8071;
+    margin-right:2px;
   }
   .dot{
-    width:8px;
-    height:8px;
+    width:12px;
+    height:12px;
     border-radius:50%;
     background:var(--paper-dim);
-    border:1px solid var(--line);
+    border:1.5px solid var(--line);
   }
   .dot.filled{
     background:var(--seal);
@@ -345,8 +360,15 @@
   }
   .audio-card.mastered{
     border-color:var(--done);
-    background:#f3f6f2;
+    background:#f3f8f3;
   }
+  .feedback{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    min-height:16px;
+  }
+  .feedback.correct{color:var(--done);font-weight:600;}
+  .feedback.incorrect{color:var(--seal);}
 
   .footer-note{
     margin-top:44px;
@@ -418,7 +440,11 @@ const data = [
     audio: [
       {hanzi:"你好", pinyin:"nǐ hǎo", es:"hola"},
       {hanzi:"谢谢", pinyin:"xièxie", es:"gracias"},
+      {hanzi:"不客气", pinyin:"bú kèqi", es:"de nada"},
+      {hanzi:"对不起", pinyin:"duìbuqǐ", es:"perdón"},
+      {hanzi:"没关系", pinyin:"méi guānxi", es:"no hay problema"},
       {hanzi:"我叫...", pinyin:"wǒ jiào...", es:"me llamo..."},
+      {hanzi:"很高兴认识你", pinyin:"hěn gāoxìng rènshi nǐ", es:"mucho gusto"},
       {hanzi:"多少钱?", pinyin:"duōshao qián?", es:"¿cuánto cuesta?"},
       {hanzi:"我要这个", pinyin:"wǒ yào zhège", es:"quiero esto"},
       {hanzi:"洗手间在哪儿?", pinyin:"xǐshǒujiān zài nǎr?", es:"¿dónde está el baño?"},
@@ -441,6 +467,9 @@ const data = [
       {hanzi:"你做什么工作?", pinyin:"nǐ zuò shénme gōngzuò?", es:"¿en qué trabajas?"},
       {hanzi:"我有点儿忙", pinyin:"wǒ yǒudiǎnr máng", es:"estoy un poco ocupado"},
       {hanzi:"周末你想做什么?", pinyin:"zhōumò nǐ xiǎng zuò shénme?", es:"¿qué quieres hacer el fin de semana?"},
+      {hanzi:"我住在...", pinyin:"wǒ zhù zài...", es:"vivo en..."},
+      {hanzi:"你家有几个人?", pinyin:"nǐ jiā yǒu jǐ ge rén?", es:"¿cuántas personas hay en tu familia?"},
+      {hanzi:"我今天很忙", pinyin:"wǒ jīntiān hěn máng", es:"hoy estoy muy ocupado"},
     ]
   },
   {
@@ -460,6 +489,9 @@ const data = [
       {hanzi:"以前我住在...", pinyin:"yǐqián wǒ zhù zài...", es:"antes vivía en..."},
       {hanzi:"你同意吗?", pinyin:"nǐ tóngyì ma?", es:"¿estás de acuerdo?"},
       {hanzi:"后来发生了什么?", pinyin:"hòulái fāshēngle shénme?", es:"¿qué pasó después?"},
+      {hanzi:"简单来说...", pinyin:"jiǎndān láishuō...", es:"para decirlo simple..."},
+      {hanzi:"我不太确定", pinyin:"wǒ bú tài quèdìng", es:"no estoy muy seguro"},
+      {hanzi:"这让我想起了...", pinyin:"zhè ràng wǒ xiǎngqǐle...", es:"esto me recuerda a..."},
     ]
   },
   {
@@ -479,6 +511,9 @@ const data = [
       {hanzi:"这跟我想的不一样", pinyin:"zhè gēn wǒ xiǎng de bù yíyàng", es:"esto no es lo que pensaba"},
       {hanzi:"你能再说一遍吗?", pinyin:"nǐ néng zài shuō yíbiàn ma?", es:"¿puedes repetirlo?"},
       {hanzi:"总的来说...", pinyin:"zǒngdeláishuō...", es:"en resumen..."},
+      {hanzi:"换句话说...", pinyin:"huàn jù huà shuō...", es:"en otras palabras..."},
+      {hanzi:"这就是我的看法", pinyin:"zhè jiùshì wǒ de kànfǎ", es:"esa es mi opinión"},
+      {hanzi:"我懂你的意思", pinyin:"wǒ dǒng nǐ de yìsi", es:"entiendo lo que quieres decir"},
     ]
   },
   {
@@ -501,6 +536,8 @@ const data = [
           {hanzi:"生菜", pinyin:"shēngcài", es:"lechuga"},
           {hanzi:"苹果", pinyin:"píngguǒ", es:"manzana"},
           {hanzi:"香蕉", pinyin:"xiāngjiāo", es:"plátano"},
+          {hanzi:"黄瓜", pinyin:"huángguā", es:"pepino"},
+          {hanzi:"橙子", pinyin:"chéngzi", es:"naranja"},
         ]
       },
       {
@@ -511,6 +548,8 @@ const data = [
           {hanzi:"果汁", pinyin:"guǒzhī", es:"jugo"},
           {hanzi:"牛奶", pinyin:"niúnǎi", es:"leche"},
           {hanzi:"啤酒", pinyin:"píjiǔ", es:"cerveza"},
+          {hanzi:"咖啡", pinyin:"kāfēi", es:"café"},
+          {hanzi:"茶", pinyin:"chá", es:"té"},
         ]
       },
       {
@@ -522,6 +561,8 @@ const data = [
           {hanzi:"肉", pinyin:"ròu", es:"carne"},
           {hanzi:"鱼", pinyin:"yú", es:"pescado"},
           {hanzi:"盐", pinyin:"yán", es:"sal"},
+          {hanzi:"糖", pinyin:"táng", es:"azúcar"},
+          {hanzi:"奶酪", pinyin:"nǎilào", es:"queso"},
         ]
       },
       {
@@ -533,6 +574,8 @@ const data = [
           {hanzi:"可以便宜一点吗?", pinyin:"kěyǐ piányi yìdiǎn ma?", es:"¿puede ser más barato?"},
           {hanzi:"我可以刷卡吗?", pinyin:"wǒ kěyǐ shuākǎ ma?", es:"¿puedo pagar con tarjeta?"},
           {hanzi:"给我一个袋子", pinyin:"gěi wǒ yí ge dàizi", es:"deme una bolsa"},
+          {hanzi:"收银台在哪儿?", pinyin:"shōuyíntái zài nǎr?", es:"¿dónde está la caja?"},
+          {hanzi:"有优惠吗?", pinyin:"yǒu yōuhuì ma?", es:"¿hay descuento?"},
         ]
       }
     ]
@@ -555,6 +598,8 @@ const data = [
           {hanzi:"我们几点见面?", pinyin:"wǒmen jǐ diǎn jiànmiàn?", es:"¿a qué hora nos vemos?"},
           {hanzi:"在哪儿见面?", pinyin:"zài nǎr jiànmiàn?", es:"¿dónde nos vemos?"},
           {hanzi:"下次再约", pinyin:"xiàcì zài yuē", es:"quedamos para la próxima"},
+          {hanzi:"你想去哪儿?", pinyin:"nǐ xiǎng qù nǎr?", es:"¿a dónde quieres ir?"},
+          {hanzi:"我请客", pinyin:"wǒ qǐngkè", es:"yo invito"},
         ]
       },
       {
@@ -564,6 +609,8 @@ const data = [
           {hanzi:"你是哪里人?", pinyin:"nǐ shì nǎlǐ rén?", es:"¿de dónde eres?"},
           {hanzi:"你喜欢这个地方吗?", pinyin:"nǐ xǐhuan zhège dìfang ma?", es:"¿te gusta este lugar?"},
           {hanzi:"我们好像有共同点", pinyin:"wǒmen hǎoxiàng yǒu gòngtóngdiǎn", es:"parece que tenemos algo en común"},
+          {hanzi:"你多大了?", pinyin:"nǐ duō dà le?", es:"¿cuántos años tienes?"},
+          {hanzi:"我们是怎么认识的?", pinyin:"wǒmen shì zěnme rènshi de?", es:"¿cómo nos conocimos?"},
         ]
       },
       {
@@ -574,6 +621,8 @@ const data = [
           {hanzi:"我也这么觉得", pinyin:"wǒ yě zhème juéde", es:"yo también pienso eso"},
           {hanzi:"再跟我说说", pinyin:"zài gēn wǒ shuōshuo", es:"cuéntame más"},
           {hanzi:"干杯!", pinyin:"gānbēi!", es:"¡salud!"},
+          {hanzi:"不会吧", pinyin:"búhuì ba", es:"no puede ser"},
+          {hanzi:"说来话长", pinyin:"shuōláihuàcháng", es:"es una historia larga"},
         ]
       },
       {
@@ -583,6 +632,7 @@ const data = [
           {hanzi:"我们该走了", pinyin:"wǒmen gāi zǒu le", es:"ya deberíamos irnos"},
           {hanzi:"下次再见", pinyin:"xiàcì zàijiàn", es:"nos vemos la próxima"},
           {hanzi:"加一下微信吧", pinyin:"jiā yíxià wēixìn ba", es:"agreguemos WeChat"},
+          {hanzi:"谢谢你今天陪我", pinyin:"xièxie nǐ jīntiān péi wǒ", es:"gracias por acompañarme hoy"},
         ]
       }
     ]
@@ -605,6 +655,8 @@ const data = [
           {hanzi:"我没听懂", pinyin:"wǒ méi tīngdǒng", es:"no entendí"},
           {hanzi:"你可以打字吗?", pinyin:"nǐ kěyǐ dǎzì ma?", es:"¿puedes escribirlo?"},
           {hanzi:"等一下,我在想怎么说", pinyin:"děng yíxià, wǒ zài xiǎng zěnme shuō", es:"espera, estoy pensando cómo decirlo"},
+          {hanzi:"这个词怎么说?", pinyin:"zhège cí zěnme shuō?", es:"¿cómo se dice esta palabra?"},
+          {hanzi:"你是说...吗?", pinyin:"nǐ shì shuō... ma?", es:"¿quieres decir...?"},
         ]
       },
       {
@@ -615,6 +667,8 @@ const data = [
           {hanzi:"不一定吧", pinyin:"bù yídìng ba", es:"no necesariamente"},
           {hanzi:"我没想到", pinyin:"wǒ méi xiǎngdào", es:"no me lo esperaba"},
           {hanzi:"有道理", pinyin:"yǒu dàolǐ", es:"tiene sentido"},
+          {hanzi:"说得对", pinyin:"shuōde duì", es:"tienes razón"},
+          {hanzi:"我不这么认为", pinyin:"wǒ bú zhème rènwéi", es:"yo no pienso así"},
         ]
       },
       {
@@ -624,6 +678,8 @@ const data = [
           {hanzi:"我不太同意", pinyin:"wǒ bú tài tóngyì", es:"no estoy muy de acuerdo"},
           {hanzi:"也许你是对的", pinyin:"yěxǔ nǐ shì duì de", es:"quizás tengas razón"},
           {hanzi:"我们各有各的看法", pinyin:"wǒmen gè yǒu gè de kànfǎ", es:"cada uno tiene su punto de vista"},
+          {hanzi:"完全正确", pinyin:"wánquán zhèngquè", es:"totalmente correcto"},
+          {hanzi:"我保留意见", pinyin:"wǒ bǎoliú yìjiàn", es:"prefiero reservarme mi opinión"},
         ]
       },
       {
@@ -633,6 +689,8 @@ const data = [
           {hanzi:"你有什么爱好?", pinyin:"nǐ yǒu shénme àihào?", es:"¿qué hobbies tienes?"},
           {hanzi:"我打算...", pinyin:"wǒ dǎsuàn...", es:"tengo pensado..."},
           {hanzi:"希望以后能一起去", pinyin:"xīwàng yǐhòu néng yìqǐ qù", es:"ojalá podamos ir juntos algún día"},
+          {hanzi:"我对...很感兴趣", pinyin:"wǒ duì... hěn gǎn xìngqù", es:"me interesa mucho..."},
+          {hanzi:"我们应该找时间见面", pinyin:"wǒmen yīnggāi zhǎo shíjiān jiànmiàn", es:"deberíamos buscar tiempo para vernos"},
         ]
       }
     ]
@@ -655,6 +713,8 @@ const data = [
           {hanzi:"我很兴奋", pinyin:"wǒ hěn xīngfèn", es:"estoy muy emocionado"},
           {hanzi:"别担心", pinyin:"bié dānxīn", es:"no te preocupes"},
           {hanzi:"我有点儿难过", pinyin:"wǒ yǒudiǎnr nánguò", es:"estoy un poco triste"},
+          {hanzi:"我很开心", pinyin:"wǒ hěn kāixīn", es:"estoy muy feliz"},
+          {hanzi:"我有点儿生气", pinyin:"wǒ yǒudiǎnr shēngqì", es:"estoy un poco enojado"},
         ]
       },
       {
@@ -665,6 +725,8 @@ const data = [
           {hanzi:"今天很热", pinyin:"jīntiān hěn rè", es:"hoy hace mucho calor"},
           {hanzi:"明天见", pinyin:"míngtiān jiàn", es:"nos vemos mañana"},
           {hanzi:"我快到了", pinyin:"wǒ kuài dào le", es:"ya casi llego"},
+          {hanzi:"今天很冷", pinyin:"jīntiān hěn lěng", es:"hoy hace mucho frío"},
+          {hanzi:"现在几点了?", pinyin:"xiànzài jǐ diǎn le?", es:"¿qué hora es?"},
         ]
       },
       {
@@ -675,6 +737,8 @@ const data = [
           {hanzi:"往左拐", pinyin:"wǎng zuǒ guǎi", es:"da vuelta a la izquierda"},
           {hanzi:"打车多少钱?", pinyin:"dǎchē duōshao qián?", es:"¿cuánto cuesta un taxi?"},
           {hanzi:"堵车了", pinyin:"dǔchē le", es:"hay tráfico"},
+          {hanzi:"离这儿远吗?", pinyin:"lí zhèr yuǎn ma?", es:"¿está lejos de aquí?"},
+          {hanzi:"我迷路了", pinyin:"wǒ mílù le", es:"estoy perdido"},
         ]
       },
       {
@@ -685,6 +749,7 @@ const data = [
           {hanzi:"给我发一下位置", pinyin:"gěi wǒ fā yíxià wèizhì", es:"mándame la ubicación"},
           {hanzi:"我信号不好", pinyin:"wǒ xìnhào bù hǎo", es:"tengo mala señal"},
           {hanzi:"你可以给我打电话吗?", pinyin:"nǐ kěyǐ gěi wǒ dǎ diànhuà ma?", es:"¿me puedes llamar?"},
+          {hanzi:"密码是什么?", pinyin:"mìmǎ shì shénme?", es:"¿cuál es la contraseña?"},
         ]
       }
     ]
@@ -742,15 +807,23 @@ data.forEach((phase, pi) => {
     return `
       <div class="audio-card" id="card-${aid}">
         <div class="audio-row">
-          <button class="play-btn" id="btn-${aid}" onclick='speak("${aid}", ${JSON.stringify(a.hanzi)})' title="Escuchar ejemplo">▶</button>
-          <button class="mic-btn" id="mic-${aid}" onclick='startRecognition("${aid}", ${JSON.stringify(a.hanzi)})' title="Grabar mi pronunciación">🎤</button>
+          <div class="btn-group">
+            <div class="btn-stack">
+              <button class="play-btn" id="btn-${aid}" onclick='speak("${aid}", ${JSON.stringify(a.hanzi)})' title="Escuchar ejemplo">▶</button>
+              <span class="btn-label">Oír</span>
+            </div>
+            <div class="btn-stack">
+              <button class="mic-btn" id="mic-${aid}" onclick='startRecognition("${aid}", ${JSON.stringify(a.hanzi)})' title="Grabar mi pronunciación">🎤</button>
+              <span class="btn-label">Hablar</span>
+            </div>
+          </div>
           <div class="audio-text">
             <div class="hanzi">${a.hanzi}</div>
             <div class="pinyin">${a.pinyin}</div>
             <div class="es">${a.es}</div>
           </div>
-          <div class="mastery-dots" id="dots-${aid}"></div>
         </div>
+        <div class="mastery-dots" id="dots-${aid}"><span class="dots-label">Dominio:</span></div>
         <div class="feedback" id="feedback-${aid}"></div>
       </div>`;
   }
@@ -815,7 +888,7 @@ function renderDots(aid){
   const el = document.getElementById('dots-'+aid);
   if(!el) return;
   const count = Math.min(state[aid] || 0, MASTERY_PLAYS);
-  let dots = '';
+  let dots = '<span class="dots-label">Dominio:</span>';
   for(let i=0;i<MASTERY_PLAYS;i++){
     dots += `<span class="dot ${i < count ? 'filled' : ''}"></span>`;
   }
