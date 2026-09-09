@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学中文 — Plan de un año</title>
+<style>
+  :root{
+    --ink:#1c1a17;
+    --paper:#efe8db;
+    --paper-dim:#e2d9c8;
+    --seal:#a33d2c;
+    --seal-dark:#7e2e20;
+    --gold:#b8892b;
+    --line:#c9bda3;
+    --done:#4f6a52;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Songti SC","Noto Serif SC","Georgia",serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 80px;}
+
+  header{
+    position:relative;
+    padding:36px 0 28px;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:28px;
+  }
+  .hanzi-hero{
+    font-size:64px;
+    line-height:1;
+    letter-spacing:2px;
+  }
+  .subtitle{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:15px;
+    color:#5a5347;
+    margin-top:10px;
+    max-width:540px;
+  }
+  .seal{
+    position:absolute;
+    top:30px;
+    right:0;
+    width:74px;
+    height:74px;
+    background:var(--seal);
+    color:var(--paper);
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    letter-spacing:1px;
+    writing-mode:vertical-rl;
+    box-shadow:0 2px 0 var(--seal-dark);
+    transform:rotate(1deg);
+  }
+
+  .progress-bar{
+    margin-top:22px;
+    height:6px;
+    background:var(--paper-dim);
+    border:1px solid var(--line);
+    position:relative;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--seal);
+    width:0%;
+    transition:width .4s ease;
+  }
+  .progress-label{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12px;
+    color:#5a5347;
+    margin-top:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .reset-btn{
+    background:none;
+    border:none;
+    color:var(--seal);
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12px;
+    cursor:pointer;
+    text-decoration:underline;
+    padding:0;
+  }
+
+  nav.phases{
+    display:flex;
+    gap:2px;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+  }
+  nav.phases button{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    background:var(--paper-dim);
+    border:1px solid var(--line);
+    color:var(--ink);
+    padding:10px 16px;
+    font-size:13px;
+    cursor:pointer;
+    flex:1;
+    min-width:150px;
+    text-align:left;
+    transition:background .2s;
+  }
+  nav.phases button .num{
+    color:var(--seal);
+    font-weight:600;
+    margin-right:6px;
+  }
+  nav.phases button.active{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  nav.phases button.active .num{color:var(--gold);}
+
+  .phase{display:none;}
+  .phase.active{display:block;}
+
+  .phase-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:6px;
+  }
+  .phase-head h2{
+    font-size:28px;
+    margin:0;
+    font-weight:600;
+  }
+  .phase-head .months{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    color:var(--seal);
+    border:1px solid var(--seal);
+    padding:2px 8px;
+    border-radius:2px;
+  }
+  .phase-focus{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    color:#5a5347;
+    font-size:14px;
+    margin-bottom:20px;
+    max-width:560px;
+  }
+
+  table.tasks{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:26px;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+  }
+  table.tasks th{
+    text-align:left;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:#8a8071;
+    font-weight:500;
+    border-bottom:1px solid var(--line);
+    padding:0 8px 8px 0;
+  }
+  table.tasks td{
+    padding:12px 8px 12px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14.5px;
+    vertical-align:top;
+  }
+  table.tasks tr:last-child td{border-bottom:none;}
+  .check{width:36px;}
+  .check input{width:18px;height:18px;accent-color:var(--seal);cursor:pointer;}
+  .task-name.done{
+    color:var(--done);
+    text-decoration:line-through;
+    text-decoration-color:var(--done);
+  }
+  .time-tag{color:var(--gold);font-size:12.5px;}
+  .tool-tag{color:#5a5347;font-size:13px;}
+
+  .milestone{
+    background:var(--paper-dim);
+    border-left:3px solid var(--seal);
+    padding:14px 16px;
+    font-size:14px;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    color:#3a352c;
+    margin-bottom:30px;
+  }
+  .milestone b{color:var(--seal-dark);}
+
+  .audio-section h3{
+    font-size:15px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    color:#8a8071;
+    font-weight:600;
+    margin:0 0 4px;
+  }
+  .audio-hint{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12.5px;
+    color:#8a8071;
+    margin-bottom:14px;
+  }
+  .audio-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .audio-group-label{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--seal-dark);
+    font-weight:600;
+    margin:18px 0 8px;
+  }
+  .audio-group-label:first-of-type{margin-top:4px;}
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    background:#fff8ec;
+    border:1px solid var(--line);
+    padding:12px 14px;
+  }
+  .audio-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .mic-btn{
+    flex:0 0 auto;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid var(--gold);
+    background:var(--paper);
+    color:var(--gold);
+    font-size:14px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .15s, color .15s;
+  }
+  .mic-btn:hover{background:var(--gold);color:#fff;}
+  .mic-btn.listening{
+    background:var(--gold);
+    color:#fff;
+    animation:pulse 1s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(184,137,43,.4);}
+    50%{box-shadow:0 0 0 6px rgba(184,137,43,0);}
+  }
+  .feedback{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12.5px;
+    min-height:16px;
+    padding-left:44px;
+  }
+  .feedback.correct{color:var(--done);}
+  .feedback.incorrect{color:var(--seal);}
+  .play-btn{
+    flex:0 0 auto;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid var(--seal);
+    background:var(--paper);
+    color:var(--seal);
+    font-size:14px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .15s, color .15s;
+  }
+  .play-btn:hover{background:var(--seal);color:var(--paper);}
+  .play-btn.playing{background:var(--seal);color:var(--paper);}
+  .audio-text .hanzi{font-size:19px;}
+  .audio-text .pinyin{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12.5px;
+    color:var(--gold);
+    margin:2px 0;
+  }
+  .audio-text .es{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12.5px;
+    color:#5a5347;
+  }
+  .mastery-dots{
+    margin-left:auto;
+    display:flex;
+    gap:4px;
+    flex:0 0 auto;
+  }
+  .dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--paper-dim);
+    border:1px solid var(--line);
+  }
+  .dot.filled{
+    background:var(--seal);
+    border-color:var(--seal);
+  }
+  .audio-card.mastered{
+    border-color:var(--done);
+    background:#f3f6f2;
+  }
+
+  .footer-note{
+    margin-top:44px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12.5px;
+    color:#8a8071;
+  }
+
+  @media (max-width:600px){
+    .hanzi-hero{font-size:44px;}
+    .seal{width:56px;height:56px;font-size:19px;top:24px;}
+    table.tasks .tool-tag{display:none;}
+    .audio-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="hanzi-hero">学中文</div>
+    <div class="subtitle">Método de un año para hablar chino con fluidez — desde cero hasta conversación real. Marca las tareas y escucha la pronunciación de cada fase.</div>
+    <div class="seal">學習</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label">
+      <span id="progressText">0 de 24 tareas completadas</span>
+      <button class="reset-btn" onclick="resetProgress()">Reiniciar progreso</button>
+    </div>
+  </header>
+
+  <div class="audio-hint" id="voiceStatus" style="margin-bottom:10px;">Comprobando voces disponibles…</div>
+  <button class="reset-btn" onclick="testVoice()" style="margin-bottom:18px;">🔊 Probar sonido básico</button>
+
+  <nav class="phases" id="phaseNav"></nav>
+
+  <div id="phasesContainer"></div>
+
+  <div class="footer-note">Tu progreso se guarda automáticamente en este navegador. El audio usa la voz china del sistema — si no escuchas nada, tu navegador puede no tener instalada una voz zh-CN (prueba en Chrome).</div>
+
+</div>
+
+<script>
+const data = [
+  {
+    title: "Cimientos",
+    months: "Meses 1–2",
+    focus: "Pinyin, tonos y frases de supervivencia",
+    tasks: [
+      {name:"Práctica diaria de tonos", time:"15 min/día", tool:"Yoyo Chinese"},
+      {name:"Vocabulario base (300–500 palabras)", time:"20 min/día", tool:"Anki — mazo HSK1"},
+      {name:"Escucha activa", time:"15 min/día", tool:"Podcast chino lento"},
+      {name:"Shadowing en voz alta", time:"15 min/día", tool:"Repetir audio nativo"},
+      {name:"Presentarte y pedir comida sin leer", time:"Meta", tool:"Auto-evaluación"},
+      {name:"Contar, dar la hora, pedir direcciones", time:"Meta", tool:"Auto-evaluación"},
+    ],
+    milestone: "Preséntate, pide comida, pregunta direcciones, cuenta y da la hora — todo sin leer.",
+    audio: [
+      {hanzi:"你好", pinyin:"nǐ hǎo", es:"hola"},
+      {hanzi:"谢谢", pinyin:"xièxie", es:"gracias"},
+      {hanzi:"我叫...", pinyin:"wǒ jiào...", es:"me llamo..."},
+      {hanzi:"多少钱?", pinyin:"duōshao qián?", es:"¿cuánto cuesta?"},
+      {hanzi:"我要这个", pinyin:"wǒ yào zhège", es:"quiero esto"},
+      {hanzi:"洗手间在哪儿?", pinyin:"xǐshǒujiān zài nǎr?", es:"¿dónde está el baño?"},
+    ]
+  },
+  {
+    title: "Bloques básicos",
+    months: "Meses 3–5",
+    focus: "Vocabulario HSK2–3, radicales, primeros caracteres, conversación real",
+    tasks: [
+      {name:"Vocabulario nuevo (15/día)", time:"20 min/día", tool:"Anki — HSK2–3"},
+      {name:"Radicales y componentes", time:"15 min/día", tool:"~150 radicales core"},
+      {name:"Input comprensible", time:"20 min/día", tool:"Video graduado"},
+      {name:"Conversación con tutor", time:"20 min, 3x/sem", tool:"iTalki / intercambio"},
+      {name:"Conversación de 5 minutos sobre tu día", time:"Meta", tool:"Auto-evaluación"},
+    ],
+    milestone: "Mantén una conversación de 5 minutos sobre vida diaria, trabajo y familia.",
+    audio: [
+      {hanzi:"我在学中文", pinyin:"wǒ zài xué zhōngwén", es:"estoy aprendiendo chino"},
+      {hanzi:"你做什么工作?", pinyin:"nǐ zuò shénme gōngzuò?", es:"¿en qué trabajas?"},
+      {hanzi:"我有点儿忙", pinyin:"wǒ yǒudiǎnr máng", es:"estoy un poco ocupado"},
+      {hanzi:"周末你想做什么?", pinyin:"zhōumò nǐ xiǎng zuò shénme?", es:"¿qué quieres hacer el fin de semana?"},
+    ]
+  },
+  {
+    title: "Expansión",
+    months: "Meses 6–8",
+    focus: "Vocabulario HSK4, oraciones complejas, lectura de textos cortos",
+    tasks: [
+      {name:"Vocabulario nuevo (15–20/día)", time:"20 min/día", tool:"Anki — HSK4"},
+      {name:"Lectura graduada", time:"15 min/día", tool:"Mandarin Companion"},
+      {name:"Escucha a velocidad nativa", time:"20 min/día", tool:"Podcasts / videos cortos"},
+      {name:"Conversación — opiniones e historias", time:"30 min, 3x/sem", tool:"Tutor"},
+      {name:"Contar una historia del pasado", time:"Meta", tool:"Auto-evaluación"},
+    ],
+    milestone: "Discute opiniones, cuenta una historia personal y entiende medios simples en chino.",
+    audio: [
+      {hanzi:"我觉得这个想法不错", pinyin:"wǒ juéde zhège xiǎngfǎ búcuò", es:"creo que esta idea no está mal"},
+      {hanzi:"以前我住在...", pinyin:"yǐqián wǒ zhù zài...", es:"antes vivía en..."},
+      {hanzi:"你同意吗?", pinyin:"nǐ tóngyì ma?", es:"¿estás de acuerdo?"},
+      {hanzi:"后来发生了什么?", pinyin:"hòulái fāshēngle shénme?", es:"¿qué pasó después?"},
+    ]
+  },
+  {
+    title: "Empuje final",
+    months: "Meses 9–12",
+    focus: "Habla natural, contenido nativo, menos dependencia de traducción",
+    tasks: [
+      {name:"Repaso + vocabulario nuevo (10–15/día)", time:"15 min/día", tool:"Anki — HSK4–5"},
+      {name:"Contenido nativo sin subtítulos", time:"25 min/día", tool:"Series, YouTube, podcasts"},
+      {name:"Conversación intensiva", time:"30–40 min, 4x/sem", tool:"Tutor + intercambio"},
+      {name:"Diario hablado", time:"15 min/día", tool:"Hablar en voz alta sobre tu día"},
+      {name:"Conversación fluida con nativos", time:"Meta", tool:"Auto-evaluación"},
+    ],
+    milestone: "Sostén conversaciones reales con hablantes nativos, a ritmo casi natural, sobre temas variados.",
+    audio: [
+      {hanzi:"说实话...", pinyin:"shuō shíhuà...", es:"para ser honesto..."},
+      {hanzi:"这跟我想的不一样", pinyin:"zhè gēn wǒ xiǎng de bù yíyàng", es:"esto no es lo que pensaba"},
+      {hanzi:"你能再说一遍吗?", pinyin:"nǐ néng zài shuō yíbiàn ma?", es:"¿puedes repetirlo?"},
+      {hanzi:"总的来说...", pinyin:"zǒngdeláishuō...", es:"en resumen..."},
+    ]
+  },
+  {
+    title: "Vocabulario del súper",
+    months: "Uso diario",
+    focus: "Palabras y frases para el supermercado y la vida cotidiana — practícalas antes de tu próxima compra",
+    tasks: [
+      {name:"Repasa esta lista antes de ir al supermercado", time:"5 min", tool:"Esta página"},
+      {name:"Usa al menos 3 frases en tu próxima compra real", time:"Meta", tool:"Auto-evaluación"},
+    ],
+    milestone: "Puedes pedir, preguntar precio y nombrar al menos 15 productos comunes sin ayuda.",
+    audioGroups: [
+      {
+        label: "Verduras y frutas",
+        items: [
+          {hanzi:"西红柿", pinyin:"xīhóngshì", es:"tomate"},
+          {hanzi:"土豆", pinyin:"tǔdòu", es:"papa"},
+          {hanzi:"洋葱", pinyin:"yángcōng", es:"cebolla"},
+          {hanzi:"胡萝卜", pinyin:"húluóbo", es:"zanahoria"},
+          {hanzi:"生菜", pinyin:"shēngcài", es:"lechuga"},
+          {hanzi:"苹果", pinyin:"píngguǒ", es:"manzana"},
+          {hanzi:"香蕉", pinyin:"xiāngjiāo", es:"plátano"},
+        ]
+      },
+      {
+        label: "Bebidas",
+        items: [
+          {hanzi:"水", pinyin:"shuǐ", es:"agua"},
+          {hanzi:"汽水", pinyin:"qìshuǐ", es:"gaseosa"},
+          {hanzi:"果汁", pinyin:"guǒzhī", es:"jugo"},
+          {hanzi:"牛奶", pinyin:"niúnǎi", es:"leche"},
+          {hanzi:"啤酒", pinyin:"píjiǔ", es:"cerveza"},
+        ]
+      },
+      {
+        label: "Comida y básicos",
+        items: [
+          {hanzi:"米饭", pinyin:"mǐfàn", es:"arroz"},
+          {hanzi:"面包", pinyin:"miànbāo", es:"pan"},
+          {hanzi:"鸡蛋", pinyin:"jīdàn", es:"huevo"},
+          {hanzi:"肉", pinyin:"ròu", es:"carne"},
+          {hanzi:"鱼", pinyin:"yú", es:"pescado"},
+          {hanzi:"盐", pinyin:"yán", es:"sal"},
+        ]
+      },
+      {
+        label: "Frases para comprar",
+        items: [
+          {hanzi:"这个多少钱?", pinyin:"zhège duōshao qián?", es:"¿cuánto cuesta esto?"},
+          {hanzi:"你们有...吗?", pinyin:"nǐmen yǒu... ma?", es:"¿tienen...?"},
+          {hanzi:"我要买这个", pinyin:"wǒ yào mǎi zhège", es:"quiero comprar esto"},
+          {hanzi:"可以便宜一点吗?", pinyin:"kěyǐ piányi yìdiǎn ma?", es:"¿puede ser más barato?"},
+          {hanzi:"我可以刷卡吗?", pinyin:"wǒ kěyǐ shuākǎ ma?", es:"¿puedo pagar con tarjeta?"},
+          {hanzi:"给我一个袋子", pinyin:"gěi wǒ yí ge dàizi", es:"deme una bolsa"},
+        ]
+      }
+    ]
+  },
+  {
+    title: "Salidas y socializar",
+    months: "Uso diario",
+    focus: "Frases para salidas con amigos, citas y charla casual — romper el hielo y mantener la conversación fluida",
+    tasks: [
+      {name:"Practica esta lista antes de tu próxima salida", time:"5 min", tool:"Esta página"},
+      {name:"Usa al menos 3 frases en una conversación real", time:"Meta", tool:"Auto-evaluación"},
+    ],
+    milestone: "Puedes invitar a alguien a salir, mantener charla casual y hacer planes sin cambiar a tu idioma.",
+    audioGroups: [
+      {
+        label: "Invitar y hacer planes",
+        items: [
+          {hanzi:"你今晚有空吗?", pinyin:"nǐ jīnwǎn yǒu kòng ma?", es:"¿estás libre esta noche?"},
+          {hanzi:"要不要一起吃饭?", pinyin:"yàobúyào yìqǐ chīfàn?", es:"¿quieres comer juntos?"},
+          {hanzi:"我们几点见面?", pinyin:"wǒmen jǐ diǎn jiànmiàn?", es:"¿a qué hora nos vemos?"},
+          {hanzi:"在哪儿见面?", pinyin:"zài nǎr jiànmiàn?", es:"¿dónde nos vemos?"},
+          {hanzi:"下次再约", pinyin:"xiàcì zài yuē", es:"quedamos para la próxima"},
+        ]
+      },
+      {
+        label: "Romper el hielo",
+        items: [
+          {hanzi:"你平时喜欢做什么?", pinyin:"nǐ píngshí xǐhuan zuò shénme?", es:"¿qué te gusta hacer normalmente?"},
+          {hanzi:"你是哪里人?", pinyin:"nǐ shì nǎlǐ rén?", es:"¿de dónde eres?"},
+          {hanzi:"你喜欢这个地方吗?", pinyin:"nǐ xǐhuan zhège dìfang ma?", es:"¿te gusta este lugar?"},
+          {hanzi:"我们好像有共同点", pinyin:"wǒmen hǎoxiàng yǒu gòngtóngdiǎn", es:"parece que tenemos algo en común"},
+        ]
+      },
+      {
+        label: "Charla casual",
+        items: [
+          {hanzi:"真的吗?", pinyin:"zhēnde ma?", es:"¿en serio?"},
+          {hanzi:"太好笑了", pinyin:"tài hǎoxiào le", es:"qué gracioso"},
+          {hanzi:"我也这么觉得", pinyin:"wǒ yě zhème juéde", es:"yo también pienso eso"},
+          {hanzi:"再跟我说说", pinyin:"zài gēn wǒ shuōshuo", es:"cuéntame más"},
+          {hanzi:"干杯!", pinyin:"gānbēi!", es:"¡salud!"},
+        ]
+      },
+      {
+        label: "Cerrar la salida",
+        items: [
+          {hanzi:"今天玩得很开心", pinyin:"jīntiān wánde hěn kāixīn", es:"hoy la pasé muy bien"},
+          {hanzi:"我们该走了", pinyin:"wǒmen gāi zǒu le", es:"ya deberíamos irnos"},
+          {hanzi:"下次再见", pinyin:"xiàcì zàijiàn", es:"nos vemos la próxima"},
+          {hanzi:"加一下微信吧", pinyin:"jiā yíxià wēixìn ba", es:"agreguemos WeChat"},
+        ]
+      }
+    ]
+  },
+  {
+    title: "Conversación fluida",
+    months: "Uso diario",
+    focus: "Lo que sostiene una conversación real: opinar, mostrar acuerdo o desacuerdo, pedir aclaración y hablar de tus intereses",
+    tasks: [
+      {name:"Repasa esta lista antes de hablar con un amigo", time:"5 min", tool:"Esta página"},
+      {name:"Úsalas en una llamada o chat de voz real", time:"Meta", tool:"Auto-evaluación"},
+    ],
+    milestone: "Puedes opinar, reaccionar, pedir que te aclaren algo y mantener el hilo sin quedarte en silencio.",
+    audioGroups: [
+      {
+        label: "Pedir aclaración",
+        items: [
+          {hanzi:"你能说慢一点吗?", pinyin:"nǐ néng shuō màn yìdiǎn ma?", es:"¿puedes hablar más despacio?"},
+          {hanzi:"这是什么意思?", pinyin:"zhè shì shénme yìsi?", es:"¿qué significa esto?"},
+          {hanzi:"我没听懂", pinyin:"wǒ méi tīngdǒng", es:"no entendí"},
+          {hanzi:"你可以打字吗?", pinyin:"nǐ kěyǐ dǎzì ma?", es:"¿puedes escribirlo?"},
+          {hanzi:"等一下,我在想怎么说", pinyin:"děng yíxià, wǒ zài xiǎng zěnme shuō", es:"espera, estoy pensando cómo decirlo"},
+        ]
+      },
+      {
+        label: "Opinar y reaccionar",
+        items: [
+          {hanzi:"我觉得...", pinyin:"wǒ juéde...", es:"yo creo que..."},
+          {hanzi:"这要看情况", pinyin:"zhè yào kàn qíngkuàng", es:"depende de la situación"},
+          {hanzi:"不一定吧", pinyin:"bù yídìng ba", es:"no necesariamente"},
+          {hanzi:"我没想到", pinyin:"wǒ méi xiǎngdào", es:"no me lo esperaba"},
+          {hanzi:"有道理", pinyin:"yǒu dàolǐ", es:"tiene sentido"},
+        ]
+      },
+      {
+        label: "Estar de acuerdo o no",
+        items: [
+          {hanzi:"我同意", pinyin:"wǒ tóngyì", es:"estoy de acuerdo"},
+          {hanzi:"我不太同意", pinyin:"wǒ bú tài tóngyì", es:"no estoy muy de acuerdo"},
+          {hanzi:"也许你是对的", pinyin:"yěxǔ nǐ shì duì de", es:"quizás tengas razón"},
+          {hanzi:"我们各有各的看法", pinyin:"wǒmen gè yǒu gè de kànfǎ", es:"cada uno tiene su punto de vista"},
+        ]
+      },
+      {
+        label: "Hablar de intereses y planes",
+        items: [
+          {hanzi:"我最近迷上了...", pinyin:"wǒ zuìjìn míshàng le...", es:"últimamente me enganché con..."},
+          {hanzi:"你有什么爱好?", pinyin:"nǐ yǒu shénme àihào?", es:"¿qué hobbies tienes?"},
+          {hanzi:"我打算...", pinyin:"wǒ dǎsuàn...", es:"tengo pensado..."},
+          {hanzi:"希望以后能一起去", pinyin:"xīwàng yǐhòu néng yìqǐ qù", es:"ojalá podamos ir juntos algún día"},
+        ]
+      }
+    ]
+  }
+];
+
+const MASTERY_PLAYS = 3;
+const STORAGE_KEY = 'chinese-plan-progress-v1';
+const nav = document.getElementById('phaseNav');
+const container = document.getElementById('phasesContainer');
+let totalTasks = 0;
+let audioTasks = 0;
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  }catch(e){ return {}; }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+data.forEach((phase, pi) => {
+  const btn = document.createElement('button');
+  btn.innerHTML = `<span class="num">${pi+1}</span>${phase.title}`;
+  btn.onclick = () => showPhase(pi);
+  nav.appendChild(btn);
+
+  const section = document.createElement('div');
+  section.className = 'phase';
+  section.id = 'phase-' + pi;
+
+  let rows = '';
+  phase.tasks.forEach((t, ti) => {
+    const id = `t-${pi}-${ti}`;
+    totalTasks++;
+    if(!(id in state)) state[id] = false;
+    const checkedAttr = state[id] ? 'checked' : '';
+    const doneClass = state[id] ? 'done' : '';
+    rows += `
+      <tr>
+        <td class="check"><input type="checkbox" id="${id}" ${checkedAttr} onchange="toggle('${id}', this.checked)"></td>
+        <td><span class="task-name ${doneClass}" id="label-${id}">${t.name}</span></td>
+        <td class="time-tag">${t.time}</td>
+        <td class="tool-tag">${t.tool}</td>
+      </tr>`;
+  });
+
+  function buildCard(a, aid){
+    if(!(aid in state)) state[aid] = 0; // correct pronunciations toward mastery
+    audioTasks++;
+    return `
+      <div class="audio-card" id="card-${aid}">
+        <div class="audio-row">
+          <button class="play-btn" id="btn-${aid}" onclick='speak("${aid}", ${JSON.stringify(a.hanzi)})' title="Escuchar ejemplo">▶</button>
+          <button class="mic-btn" id="mic-${aid}" onclick='startRecognition("${aid}", ${JSON.stringify(a.hanzi)})' title="Grabar mi pronunciación">🎤</button>
+          <div class="audio-text">
+            <div class="hanzi">${a.hanzi}</div>
+            <div class="pinyin">${a.pinyin}</div>
+            <div class="es">${a.es}</div>
+          </div>
+          <div class="mastery-dots" id="dots-${aid}"></div>
+        </div>
+        <div class="feedback" id="feedback-${aid}"></div>
+      </div>`;
+  }
+
+  let audioCards = '';
+  const dotIds = [];
+
+  if(phase.audioGroups){
+    phase.audioGroups.forEach((group, gi) => {
+      audioCards += `<div class="audio-group-label">${group.label}</div><div class="audio-grid">`;
+      group.items.forEach((a, ai) => {
+        const aid = `a-${pi}-${gi}-${ai}`;
+        audioCards += buildCard(a, aid);
+        dotIds.push(aid);
+      });
+      audioCards += `</div>`;
+    });
+  } else {
+    audioCards += `<div class="audio-grid">`;
+    phase.audio.forEach((a, ai) => {
+      const aid = `a-${pi}-${ai}`;
+      audioCards += buildCard(a, aid);
+      dotIds.push(aid);
+    });
+    audioCards += `</div>`;
+  }
+
+  section.innerHTML = `
+    <div class="phase-head">
+      <h2>${phase.title}</h2>
+      <span class="months">${phase.months}</span>
+    </div>
+    <div class="phase-focus">${phase.focus}</div>
+    <table class="tasks">
+      <tr><th></th><th>Tarea</th><th>Tiempo</th><th>Herramienta</th></tr>
+      ${rows}
+    </table>
+    <div class="milestone"><b>Meta de fase —</b> ${phase.milestone}</div>
+    <div class="audio-section">
+      <h3>${phase.audioGroups ? 'Vocabulario y frases' : 'Frases de esta fase'}</h3>
+      <div class="audio-hint">Toca ▶ para oír el ejemplo, luego 🎤 y repite la frase en voz alta. Necesitas pronunciarla correctamente ${MASTERY_PLAYS} veces para quedar "dominada".</div>
+      ${audioCards}
+    </div>
+  `;
+  container.appendChild(section);
+  dotIds.forEach(aid => renderDots(aid));
+});
+
+function showPhase(i){
+  document.querySelectorAll('.phase').forEach((el, idx) => el.classList.toggle('active', idx===i));
+  document.querySelectorAll('nav.phases button').forEach((el, idx) => el.classList.toggle('active', idx===i));
+}
+
+function toggle(id, checked){
+  state[id] = checked;
+  document.getElementById('label-'+id).classList.toggle('done', checked);
+  saveState();
+  updateProgress();
+}
+
+function renderDots(aid){
+  const el = document.getElementById('dots-'+aid);
+  if(!el) return;
+  const count = Math.min(state[aid] || 0, MASTERY_PLAYS);
+  let dots = '';
+  for(let i=0;i<MASTERY_PLAYS;i++){
+    dots += `<span class="dot ${i < count ? 'filled' : ''}"></span>`;
+  }
+  el.innerHTML = dots;
+  document.getElementById('card-'+aid).classList.toggle('mastered', count >= MASTERY_PLAYS);
+}
+
+function registerPlay(aid){
+  state[aid] = Math.min((state[aid] || 0) + 1, MASTERY_PLAYS);
+  saveState();
+  renderDots(aid);
+  updateProgress();
+}
+
+function resetProgress(){
+  if(!confirm('¿Reiniciar todo el progreso?')) return;
+  Object.keys(state).forEach(k => state[k] = k.startsWith('a-') ? 0 : false);
+  saveState();
+  document.querySelectorAll('table.tasks input[type=checkbox]').forEach(cb => cb.checked = false);
+  document.querySelectorAll('.task-name').forEach(el => el.classList.remove('done'));
+  Object.keys(state).forEach(k => { if(k.startsWith('a-')) renderDots(k); });
+  updateProgress();
+}
+
+function updateProgress(){
+  const taskKeys = Object.keys(state).filter(k => k.startsWith('t-'));
+  const audioKeys = Object.keys(state).filter(k => k.startsWith('a-'));
+  const tasksDone = taskKeys.filter(k => state[k]).length;
+  const audioProgress = audioKeys.reduce((sum,k) => sum + Math.min(state[k],MASTERY_PLAYS)/MASTERY_PLAYS, 0);
+  const totalUnits = taskKeys.length + audioKeys.length;
+  const doneUnits = tasksDone + audioProgress;
+  const pct = totalUnits ? Math.round((doneUnits/totalUnits)*100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  const audioMastered = audioKeys.filter(k => state[k] >= MASTERY_PLAYS).length;
+  document.getElementById('progressText').textContent =
+    `${tasksDone} de ${taskKeys.length} tareas · ${audioMastered} de ${audioKeys.length} frases dominadas`;
+}
+
+let voicesReady = false;
+let voiceList = [];
+
+function loadVoices(){
+  return new Promise((resolve) => {
+    if(!('speechSynthesis' in window)){ resolve([]); return; }
+    let v = window.speechSynthesis.getVoices();
+    if(v && v.length){ resolve(v); return; }
+    // Voices load async in Chrome — wait for the event, with a timeout fallback.
+    let done = false;
+    window.speechSynthesis.onvoiceschanged = () => {
+      if(done) return;
+      done = true;
+      resolve(window.speechSynthesis.getVoices());
+    };
+    setTimeout(() => {
+      if(done) return;
+      done = true;
+      resolve(window.speechSynthesis.getVoices());
+    }, 1200);
+  });
+}
+
+async function ensureVoices(){
+  if(voicesReady) return voiceList;
+  voiceList = await loadVoices();
+  voicesReady = true;
+  const zh = voiceList.filter(v => v.lang && v.lang.toLowerCase().startsWith('zh'));
+  const statusEl = document.getElementById('voiceStatus');
+  if(statusEl){
+    if(zh.length){
+      statusEl.textContent = `Voz china detectada: ${zh[0].name} (${zh.length} disponible${zh.length>1?'s':''})`;
+      statusEl.style.color = 'var(--done)';
+    } else {
+      statusEl.textContent = 'No se encontró voz china en este navegador — Chrome en Android/desktop suele tenerla; en iPhone hay que activarla en Ajustes > Accesibilidad > Contenido hablado > Voces > Chino.';
+      statusEl.style.color = 'var(--seal)';
+    }
+  }
+  return voiceList;
+}
+
+async function speak(id, text){
+  const btn = document.getElementById('btn-'+id);
+  document.querySelectorAll('.play-btn').forEach(b => b.classList.remove('playing'));
+  btn.classList.add('playing');
+
+  // Primary: real Chinese audio via Google's TTS endpoint (works regardless
+  // of which voices are installed on the device).
+  const url = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&q=' +
+              encodeURIComponent(text) + '&tl=zh-CN&client=gtx';
+  const audio = new Audio(url);
+  audio.onended = () => { btn.classList.remove('playing'); registerPlay(id); };
+  audio.onerror = () => { btn.classList.remove('playing'); speakFallback(id, text); };
+
+  try{
+    await audio.play();
+  }catch(e){
+    btn.classList.remove('playing');
+    speakFallback(id, text);
+  }
+}
+
+async function speakFallback(id, text){
+  if(!('speechSynthesis' in window)) return;
+  const btn = document.getElementById('btn-'+id);
+  window.speechSynthesis.cancel();
+
+  const voices = await ensureVoices();
+  const zhVoice = voices.find(v => v.lang === 'zh-CN')
+                || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('zh'));
+
+  if(!zhVoice){
+    alert('No se pudo reproducir el audio en línea y tu navegador no tiene instalada una voz china de respaldo.\n\nEn Windows: Ajustes > Hora e idioma > Idioma y región > Agregar idioma > Chino (simplificado) > marcar "Reconocimiento de voz".\nEn Android: Ajustes > Sistema > Idiomas > Síntesis de voz > instalar chino.');
+    return;
+  }
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'zh-CN';
+  utter.rate = 0.85;
+  utter.volume = 1;
+  utter.voice = zhVoice;
+
+  btn.classList.add('playing');
+  utter.onend = () => { btn.classList.remove('playing'); registerPlay(id); };
+  utter.onerror = () => btn.classList.remove('playing');
+
+  window.speechSynthesis.resume();
+  setTimeout(() => window.speechSynthesis.speak(utter), 50);
+}
+
+function testVoice(){
+  if(!('speechSynthesis' in window)){
+    alert('Este navegador no soporta síntesis de voz en absoluto.');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance('Hola, esto es una prueba de sonido.');
+  utter.lang = 'es-ES';
+  utter.volume = 1;
+  utter.onstart = () => console.log('test voice started');
+  utter.onerror = (e) => alert('Error al reproducir: ' + e.error);
+  window.speechSynthesis.resume();
+  setTimeout(() => window.speechSynthesis.speak(utter), 50);
+}
+
+// Kick off voice loading as soon as the page is ready.
+ensureVoices();
+
+updateProgress();
+showPhase(0);
+
+// ---- Pronunciation check (Web Speech API) ----
+
+function normalizeZh(s){
+  return (s || '')
+    .replace(/[，。？！,.\?!\s、]/g, '')
+    .trim();
+}
+
+// Simple Levenshtein distance for fuzzy matching short phrases.
+function levenshtein(a, b){
+  const m = a.length, n = b.length;
+  const dp = Array.from({length:m+1}, () => new Array(n+1).fill(0));
+  for(let i=0;i<=m;i++) dp[i][0] = i;
+  for(let j=0;j<=n;j++) dp[0][j] = j;
+  for(let i=1;i<=m;i++){
+    for(let j=1;j<=n;j++){
+      dp[i][j] = a[i-1] === b[j-1]
+        ? dp[i-1][j-1]
+        : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+    }
+  }
+  return dp[m][n];
+}
+
+function isCloseEnough(said, expected){
+  const s = normalizeZh(said);
+  const e = normalizeZh(expected);
+  if(!s) return false;
+  if(s === e) return true;
+  const dist = levenshtein(s, e);
+  const tolerance = Math.max(1, Math.ceil(e.length * 0.25));
+  return dist <= tolerance;
+}
+
+function startRecognition(aid, expectedText){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const feedback = document.getElementById('feedback-'+aid);
+  const micBtn = document.getElementById('mic-'+aid);
+
+  if(!window.isSecureContext){
+    feedback.textContent = '⚠️ El micrófono requiere que el archivo se abra por https:// (o localhost) — abrirlo directamente desde el teléfono (file://) lo bloquea sin avisar. Sube el archivo a un hosting simple (ej. Netlify Drop) o pídele a Claude que te dé un enlace https para probarlo.';
+    feedback.className = 'feedback incorrect';
+    return;
+  }
+
+  if(!SR){
+    feedback.textContent = 'Tu navegador no soporta reconocimiento de voz — prueba en Chrome de escritorio o Android.';
+    feedback.className = 'feedback incorrect';
+    return;
+  }
+
+  const recognition = new SR();
+  recognition.lang = 'zh-CN';
+  recognition.maxAlternatives = 3;
+  recognition.interimResults = false;
+
+  micBtn.classList.add('listening');
+  feedback.textContent = '🎤 Escuchando… di la frase ahora';
+  feedback.className = 'feedback';
+
+  recognition.onresult = (e) => {
+    const alts = Array.from(e.results[0]).map(r => r.transcript);
+    const correct = alts.some(alt => isCloseEnough(alt, expectedText));
+    if(correct){
+      feedback.textContent = '✅ ¡Correcto! — dijiste: ' + alts[0];
+      feedback.className = 'feedback correct';
+      registerPlay(aid);
+    } else {
+      feedback.textContent = '❌ Intenta de nuevo — se entendió: "' + alts[0] + '"';
+      feedback.className = 'feedback incorrect';
+    }
+  };
+
+  recognition.onerror = (e) => {
+    micBtn.classList.remove('listening');
+    if(e.error === 'not-allowed' || e.error === 'permission-denied'){
+      feedback.textContent = 'Necesitas permitir el acceso al micrófono para esta función.';
+    } else if(e.error === 'no-speech'){
+      feedback.textContent = 'No se detectó voz — intenta de nuevo.';
+    } else {
+      feedback.textContent = 'Error al reconocer voz: ' + e.error;
+    }
+    feedback.className = 'feedback incorrect';
+  };
+
+  recognition.onend = () => micBtn.classList.remove('listening');
+
+  recognition.start();
+}
+</script>
+</body>
+</html>
